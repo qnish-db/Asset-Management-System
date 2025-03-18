@@ -1,0 +1,144 @@
+# Asset Management System - Class Diagram Information
+
+## Main Application
+- com.ooad.assetmanagement.AssetManagementApplication
+  - Main Spring Boot application class
+  - Supports both web and JavaFX modes
+
+## Domain Models
+- com.ooad.assetmanagement.model.User
+  - Properties: id, username, email, password, role
+  - Relationships: OneToMany with Portfolio
+  
+- com.ooad.assetmanagement.model.Portfolio
+  - Properties: id, name, description, user
+  - Relationships: ManyToOne with User, OneToMany with Asset
+
+- com.ooad.assetmanagement.model.Asset (abstract)
+  - Properties: id, name, purchaseValue, currentValue, purchaseDate, portfolio
+  - Relationships: ManyToOne with Portfolio
+  - Subtypes: Stock, MutualFund, RealEstate
+
+- com.ooad.assetmanagement.model.Stock
+  - Extends: Asset
+  - Additional properties: tickerSymbol, numberOfShares, dividendYield
+
+- com.ooad.assetmanagement.model.MutualFund
+  - Extends: Asset
+  - Additional properties: fundSymbol, numberOfUnits, expenseRatio
+
+- com.ooad.assetmanagement.model.RealEstate
+  - Extends: Asset
+  - Additional properties: address, propertyType, squareFootage
+
+## Repositories
+- com.ooad.assetmanagement.repository.UserRepository
+  - Extends JpaRepository<User, Long>
+  - Methods: findByUsername, findByEmail, existsByUsername, existsByEmail
+
+- com.ooad.assetmanagement.repository.PortfolioRepository
+  - Extends JpaRepository<Portfolio, Long>
+  - Methods: findByUserId
+
+- com.ooad.assetmanagement.repository.AssetRepository
+  - Extends JpaRepository<Asset, Long>
+  - Methods: findByPortfolioId, findByType
+
+## Services
+- com.ooad.assetmanagement.service.UserService (interface)
+  - Methods: registerUser, findByUsername, findByEmail, findAllUsers, findById, updateUser, deleteUser, existsByUsername, existsByEmail
+
+- com.ooad.assetmanagement.service.impl.UserServiceImpl
+  - Implements: UserService
+  - Dependencies: UserRepository, PasswordEncoder
+
+- com.ooad.assetmanagement.service.PortfolioService (interface)
+  - Methods: createPortfolio, findAllPortfolios, findPortfolioById, findPortfoliosByUserId, updatePortfolio, deletePortfolio
+
+- com.ooad.assetmanagement.service.impl.PortfolioServiceImpl
+  - Implements: PortfolioService
+  - Dependencies: PortfolioRepository
+
+- com.ooad.assetmanagement.service.AssetService (interface)
+  - Methods: createAsset, findAllAssets, findAssetById, findAssetsByPortfolioId, updateAsset, deleteAsset, findAssetsByType
+
+- com.ooad.assetmanagement.service.impl.AssetServiceImpl
+  - Implements: AssetService
+  - Dependencies: AssetRepository
+
+## REST Controllers
+- com.ooad.assetmanagement.controller.UserController
+  - REST endpoints for user management
+  - Dependencies: UserService
+
+- com.ooad.assetmanagement.controller.PortfolioController
+  - REST endpoints for portfolio management
+  - Dependencies: PortfolioService, UserService
+
+- com.ooad.assetmanagement.controller.AssetController
+  - REST endpoints for asset management
+  - Dependencies: AssetService, PortfolioService
+
+- com.ooad.assetmanagement.controller.HomeController
+  - Main controller for home page
+  - Dependencies: UserService
+
+## Web Controller
+- com.ooad.assetmanagement.web.controller.WebController
+  - Web MVC controller for web interface
+  - Dependencies: UserService
+  - Handles: login, registration, dashboard views
+
+## JavaFX
+- com.ooad.assetmanagement.javafx.AssetManagementJavaFXApplication
+  - JavaFX application entry point
+  - Extends javafx.application.Application
+
+### JavaFX Controllers
+- com.ooad.assetmanagement.javafx.controller.LoginController
+  - Controls login.fxml
+  - Dependencies: UserService
+
+- com.ooad.assetmanagement.javafx.controller.RegisterController
+  - Controls register.fxml
+  - Dependencies: UserService
+
+- com.ooad.assetmanagement.javafx.controller.DashboardController
+  - Controls dashboard.fxml
+  - Dependencies: UserService, PortfolioService, AssetService
+
+## Configuration
+- com.ooad.assetmanagement.config.SecurityConfig
+  - Spring Security configuration
+  - Dependencies: PasswordEncoder
+
+## Class Relationships
+- User <--> Portfolio (One-to-Many)
+- Portfolio <--> Asset (One-to-Many)
+- Asset <-- Stock, MutualFund, RealEstate (Inheritance)
+- Service <-- ServiceImpl (Interface Implementation)
+- Controller --> Service (Dependency)
+
+## Design Patterns Used
+1. MVC Pattern
+   - Model: Domain classes in model package
+   - View: JavaFX FXML files and Web templates
+   - Controller: JavaFX controllers and Web controllers
+
+2. Repository Pattern
+   - All repositories extend JpaRepository for data access
+
+3. Dependency Injection
+   - Used throughout via Spring's @Autowired
+
+4. Singleton Pattern
+   - All Spring services are singletons
+
+5. Strategy Pattern
+   - Service interfaces with concrete implementations
+
+6. Factory Pattern 
+   - Spring's ApplicationContext acts as a factory for beans
+
+7. Facade Pattern
+   - Service layer acts as a facade for repositories 

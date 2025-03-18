@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.ooad.assetmanagement.javafx.controller.DashboardController"
+            stylesheets="/fxml/styles.css"
+            prefWidth="1024" prefHeight="768">
+    
+    <left>
+        <VBox styleClass="nav-panel" prefWidth="220" spacing="5">
+            <Label styleClass="nav-title" text="Asset Management"/>
+            <Separator/>
+            <Label styleClass="nav-item-active" text="Dashboard" onMouseClicked="#handleDashboardNav"/>
+            <Label styleClass="nav-item" text="Portfolios" onMouseClicked="#handlePortfoliosNav"/>
+            <Label styleClass="nav-item" text="Assets" onMouseClicked="#handleAssetsNav"/>
+            <Label styleClass="nav-item" text="Reports" onMouseClicked="#handleReportsNav"/>
+            <Label styleClass="nav-item" text="Settings" onMouseClicked="#handleSettingsNav"/>
+            <Separator/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Label styleClass="nav-item" text="Logout" onMouseClicked="#handleLogout"/>
+            <padding>
+                <Insets bottom="15"/>
+            </padding>
+        </VBox>
+    </left>
+    
+    <center>
+        <ScrollPane fitToWidth="true">
+            <VBox spacing="20">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+                
+                <HBox alignment="CENTER_LEFT" spacing="20">
+                    <Label styleClass="label-header" text="Dashboard"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="welcomeLabel" text="Welcome, John Doe"/>
+                    <Button text="Refresh" onAction="#handleRefresh"/>
+                </HBox>
+                
+                <HBox spacing="15">
+                    <VBox styleClass="dashboard-card dashboard-card-primary" HBox.hgrow="ALWAYS">
+                        <Label styleClass="dashboard-card-title" text="Total Assets Value"/>
+                        <Label fx:id="totalValueLabel" styleClass="dashboard-card-value" text="\$0.00"/>
+                    </VBox>
+                    <VBox styleClass="dashboard-card dashboard-card-success" HBox.hgrow="ALWAYS">
+                        <Label styleClass="dashboard-card-title" text="Total Return"/>
+                        <Label fx:id="totalReturnLabel" styleClass="dashboard-card-value" text="\$0.00"/>
+                    </VBox>
+                    <VBox styleClass="dashboard-card dashboard-card-info" HBox.hgrow="ALWAYS">
+                        <Label styleClass="dashboard-card-title" text="Portfolio Count"/>
+                        <Label fx:id="portfolioCountLabel" styleClass="dashboard-card-value" text="0"/>
+                    </VBox>
+                    <VBox styleClass="dashboard-card dashboard-card-warning" HBox.hgrow="ALWAYS">
+                        <Label styleClass="dashboard-card-title" text="Asset Count"/>
+                        <Label fx:id="assetCountLabel" styleClass="dashboard-card-value" text="0"/>
+                    </VBox>
+                </HBox>
+                
+                <HBox spacing="15">
+                    <VBox styleClass="card" HBox.hgrow="ALWAYS" maxHeight="400">
+                        <Label styleClass="label-subheader" text="Asset Allocation"/>
+                        <PieChart fx:id="assetAllocationChart" legendVisible="true" labelsVisible="true"/>
+                    </VBox>
+                    <VBox styleClass="card" HBox.hgrow="ALWAYS" maxHeight="400">
+                        <Label styleClass="label-subheader" text="Portfolio Performance"/>
+                        <LineChart fx:id="performanceChart">
+                            <xAxis>
+                                <CategoryAxis label="Time Period"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis label="Value ($)"/>
+                            </yAxis>
+                        </LineChart>
+                    </VBox>
+                </HBox>
+                
+                <VBox styleClass="card">
+                    <Label styleClass="label-subheader" text="Recent Activities"/>
+                    <TableView fx:id="recentActivitiesTable">
+                        <columns>
+                            <TableColumn fx:id="activityDateColumn" text="Date"/>
+                            <TableColumn fx:id="activityTypeColumn" text="Type"/>
+                            <TableColumn fx:id="activityDescriptionColumn" text="Description"/>
+                            <TableColumn fx:id="activityValueColumn" text="Value"/>
+                        </columns>
+                        <placeholder>
+                            <Label text="No recent activities to display"/>
+                        </placeholder>
+                    </TableView>
+                </VBox>
+                
+                <VBox styleClass="card">
+                    <Label styleClass="label-subheader" text="Top Performing Assets"/>
+                    <TableView fx:id="topAssetsTable">
+                        <columns>
+                            <TableColumn fx:id="assetNameColumn" text="Name"/>
+                            <TableColumn fx:id="assetTypeColumn" text="Type"/>
+                            <TableColumn fx:id="assetValueColumn" text="Current Value"/>
+                            <TableColumn fx:id="assetROIColumn" text="ROI (%)"/>
+                        </columns>
+                        <placeholder>
+                            <Label text="No assets to display"/>
+                        </placeholder>
+                    </TableView>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+    
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #f8f9fc; -fx-padding: 10px;">
+            <Label text="© 2023 Asset Management System. Version 1.0.0"/>
+        </HBox>
+    </bottom>
+    
+</BorderPane> 
