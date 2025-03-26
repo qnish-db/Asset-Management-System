@@ -93,7 +93,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Contributors
 
-- Your Team Members' Names
+- Akshay Simha
+- Anikait Nanjundappa
+- Anish D B
+- Ashish Chandra
 
 ## Acknowledgments
 
